@@ -12,13 +12,16 @@ namespace ManaballThemAll.Controllers
     {
       var rollResult = Roll(character.Magic + character.Tradition);
       var resisted = rollResult.hits;
-      var drainDamage = CalculateDrainDamage(5, ampUpMagic, resisted);
-      return new ActionResult<ManaballAction>(new ManaballAction(drainDamage, resisted));
+      var drainDamage = CalculateDrainDamage(5, ampUpMagic, resisted, character);
+      return new ActionResult<ManaballAction>(new ManaballAction(drainDamage.mentalDamage, drainDamage.physicalDamage, resisted));
     }
 
-    private int CalculateDrainDamage(int baseDrain, int ampUpMagic, int resisted)
+    private (int mentalDamage, int physicalDamage) CalculateDrainDamage(int baseDrain, int ampUpMagic, int resisted, CharacterSpecs character)
     {
-      return Math.Max(0, (baseDrain + ampUpMagic*2) - resisted);
+      var drainDamage = (baseDrain + ampUpMagic*2) - resisted;
+      return drainDamage <= character.Magic ? 
+        (mentalDamage: Math.Max(0, drainDamage), physicalDamage: 0) 
+        : (mentalDamage: 0, physicalDamage: drainDamage);
     }
 
     private (int hits, bool isGlitch, bool isCriticalGlitch) Roll(int noOfDices)

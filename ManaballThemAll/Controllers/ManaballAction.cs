@@ -2,14 +2,17 @@
 {
   public class ManaballAction
   {
-    public ManaballAction(int drainDamage, int resistedDamage)
+    public ManaballAction(int mentalDamage, int physicalDamage, int resistedDamage)
     {
       ResistedDamage = resistedDamage;
-      DrainDamageOnSpellCaster = drainDamage;
+      MentalDamageOnSpellCaster = mentalDamage;
+      PhysicalDamageOnSpellCaster = physicalDamage;
     }
+
+    public int PhysicalDamageOnSpellCaster { get; set; }
 
     public int ResistedDamage { get; set; }
 
-    public int DrainDamageOnSpellCaster { get; set; }
+    public int MentalDamageOnSpellCaster { get; set; }
   }
 }
